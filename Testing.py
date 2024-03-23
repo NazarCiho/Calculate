@@ -1,6 +1,7 @@
 from tkinter import *
 import random, time
 from tkinter import messagebox, ttk
+from tkinter.filedialog import *
 root=Tk()
 w = root.winfo_screenwidth()
 h = root.winfo_screenheight()
@@ -23,7 +24,6 @@ x=0
 rating = 0
 def next():
     global x, rating
-
     words = {'Cat': 'Кіт', 'Chair': 'Крісло', 'Window': 'Вікно', 'Laptop': 'Ноутбук', 'Car': 'Машина',
              'Number': 'Номер', 'Circle': 'Коло',
              'Database': 'База даних', 'Interface': 'Інтерфейс', 'Width': 'Ширина', 'State': 'Стан',
@@ -100,6 +100,7 @@ def end(rating):
     progress = ttk.Progressbar(root, orient="horizontal", length=200, mode="determinate", maximum=100, value=0,)
     progress['value']=100/12*rating
     progress.place(x=155,y=280)
+    but_save.place(x=153, y=320)
 lab_testing=Label(text='Тестування з англійської мови',font=(None, 12),background='orange')
 lab_testing.place(x=20,y=15)
 ################ТЕСТИ##################
@@ -121,6 +122,16 @@ rb_3=Radiobutton(lab_test,text='qq',variable=variant,value=3,font=('Times new ro
 rb_3.pack(anchor=W)
 lab_time_text=Label(text='Пройшло       сек',font=('Times new roman',13),background='black',foreground='lime')
 lab_time = Label(text='-1',font=('Times new roman',13),background='black',foreground='lime')
+def save():
+    name = askopenfilename()
+    global rating
+    try:
+        with open(name, 'w', encoding="utf-8") as file:
+            print(rating)
+            file.write(f"Сума балів: {rating},\nВи справилися за {lab_time['text']} сек")
+    except:
+        messagebox.showerror('ERROR','Ви не обрали файл')
+but_save=Button(text='Зберегти результат',command=save,font=('Times new roman',17))
 def update_time():
     lab_time['text'] = int(lab_time['text']) + 1
     root.after(1000, update_time)
